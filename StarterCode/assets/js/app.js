@@ -30,11 +30,11 @@ d3.csv("assets/data/data.csv").then(function(dataSet){
     var height = svgHeight - margin.top - margin.bottom;
 
     var xScale = d3.scaleLinear()
-                   .domain([d3.min(dataSet, d => d.poverty),d3.max(dataSet, d => d.poverty)])
+                   .domain([9,d3.max(dataSet, d => d.poverty)])
                    .range([0, width])
 
     var yScale = d3.scaleLinear()
-                   .domain([d3.min(dataSet, d => d.healthcare),d3.max(dataSet, d => d.healthcare)])
+                   .domain([0,d3.max(dataSet, d => d.healthcare)])
                    .range([height, 0])
 
     xAxis = d3.axisBottom(xScale);
@@ -49,11 +49,27 @@ d3.csv("assets/data/data.csv").then(function(dataSet){
         .classed("y-axis", true)
         .call(yAxis);
 
-    var circlesLocal = chartLocal.selectAll("circle")
-        .data(dataSet)
-        var element = circlesLocal.enter();
+    var circlesGraph = chartLocal.selectAll('circle')
+        .data(dataSet).enter()
+        .append('circle')
+        .attr("cx", d => xScale(d.poverty))
+        .attr("cy", d => yScale(d.healthcare))
+        .attr("r", "10")
+        .attr("fill", "red");
 
-
+    var circleText = chartLocal.selectAll(".stateText")
+            .data(dataSet).enter()
+            .append("text")
+            .text(d => d.abbr)
+            .attr("x", d => xScale(d.poverty))
+            .attr("y", d => yScale(d.healthcare))
+            .classed(".stateText", true)
+            .attr("font-family", "sans-serif")
+            .attr("text-anchor", "middle")
+            .attr("fill", "black")
+            .attr("font-size", "8px")
+            .attr("alignment-baseline", "central")
+            .style("font-weight", "bold");
 
     chartLocal.append("text")
             .attr("transform", "rotate(-90)")
@@ -70,5 +86,3 @@ d3.csv("assets/data/data.csv").then(function(dataSet){
 
     });
 });
-
-
