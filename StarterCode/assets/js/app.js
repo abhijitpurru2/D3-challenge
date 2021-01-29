@@ -57,19 +57,17 @@ d3.csv("assets/data/data.csv").then(function(dataSet){
         .attr("r", "10")
         .attr("fill", "red");
 
-    var circleText = chartLocal.selectAll(".stateText")
-            .data(dataSet).enter()
-            .append("text")
-            .text(d => d.abbr)
-            .attr("x", d => xScale(d.poverty))
-            .attr("y", d => yScale(d.healthcare))
-            .classed(".stateText", true)
-            .attr("font-family", "sans-serif")
-            .attr("text-anchor", "middle")
-            .attr("fill", "black")
-            .attr("font-size", "8px")
-            .attr("alignment-baseline", "central")
-            .style("font-weight", "bold");
+    chartLocal.select("g")
+        .selectAll("circle")
+        .data(dataSet).enter()
+        .append("text")
+        .text(d => d.abbr)
+        .attr("x", d => xScale(d.poverty))
+        .attr("y", d => yScale(d.healthcare))
+        .attr("dy",-395)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .attr("fill", "black");
 
     chartLocal.append("text")
             .attr("transform", "rotate(-90)")
