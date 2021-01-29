@@ -1,7 +1,8 @@
-
+// svg variables
 var svgWidth = 960;
 var svgHeight = 500;
 
+// margins
 var margin = {
       top: 20,
       right: 40,
@@ -16,6 +17,7 @@ var svgScatter = d3.select("#scatter")
 
 var chartLocal = svgScatter.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+// Get data from csv
 d3.csv("assets/data/data.csv").then(function(dataSet){
     dataSet.forEach(function(data){
         data.age = +data.age;
@@ -29,10 +31,11 @@ d3.csv("assets/data/data.csv").then(function(dataSet){
     var width = svgWidth - margin.left - margin.right;
     var height = svgHeight - margin.top - margin.bottom;
 
+ // X Axis
     var xScale = d3.scaleLinear()
                    .domain([9,d3.max(dataSet, d => d.poverty)])
                    .range([0, width])
-
+ // Y Axis
     var yScale = d3.scaleLinear()
                    .domain([0,d3.max(dataSet, d => d.healthcare)])
                    .range([height, 0])
@@ -48,7 +51,8 @@ d3.csv("assets/data/data.csv").then(function(dataSet){
     chartLocal.append("g")
         .classed("y-axis", true)
         .call(yAxis);
-
+          
+// Creates circles
     var circlesGraph = chartLocal.selectAll('circle')
         .data(dataSet).enter()
         .append('circle')
@@ -57,6 +61,7 @@ d3.csv("assets/data/data.csv").then(function(dataSet){
         .attr("r", "10")
         .attr("fill", "red");
 
+// Text for circles
     chartLocal.select("g")
         .selectAll("circle")
         .data(dataSet).enter()
@@ -69,6 +74,7 @@ d3.csv("assets/data/data.csv").then(function(dataSet){
         .attr("font-size", "12px")
         .attr("fill", "black");
 
+// XLabel
     chartLocal.append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", 0 - 50)
@@ -76,8 +82,8 @@ d3.csv("assets/data/data.csv").then(function(dataSet){
             .attr("dy", "1em")
             .attr("class", "axisText")
             .text("Healthcare Lack Percent (%)");
-
-        chartLocal.append("text")
+// YLabel
+     chartLocal.append("text")
             .attr("transform", `translate(${width / 2.5}, ${height + margin.top + 25})`)
             .attr("class", "axisText")
             .text("Poverty Percent (%)");
